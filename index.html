@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise Personal AI Assistant</title>
+    <meta name="description" content="A comprehensive glassmorphic personal AI assistant dashboard built with HTML5, CSS3, and vanilla JS." />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <script defer src="js/main.js" type="module"></script>
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Sidebar Navigation Drawer -->
+        <aside id="sidebar" class="app-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">🤖</div>
+                <div class="sidebar-logo">Alpha AI</div>
+            </div>
+            
+            <div class="sidebar-menu-wrapper">
+                <ul class="sidebar-menu-list">
+                    <li>
+                        <a class="sidebar-link active" data-target="dashboard">
+                            <span>🏠</span> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" data-target="aiChat">
+                            <span>💬</span> AI Chatbot
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-title">Cognitive Services</div>
+                <ul class="sidebar-menu-list">
+                    <li><a class="sidebar-link" data-target="voiceRecognition"><span>🎤</span> Voice Control</a></li>
+                    <li><a class="sidebar-link" data-target="speechRecognition"><span>🔊</span> Dictation</a></li>
+                    <li><a class="sidebar-link" data-target="translator"><span>🌐</span> Translator</a></li>
+                    <li><a class="sidebar-link" data-target="ocr"><span>🔍</span> OCR Text Extractor</a></li>
+                    <li><a class="sidebar-link" data-target="faceDetection"><span>👤</span> Face Recognition</a></li>
+                </ul>
+
+                <div class="sidebar-section-title">Productivity</div>
+                <ul class="sidebar-menu-list">
+                    <li><a class="sidebar-link" data-target="todoList"><span>✅</span> Tasks & To-dos</a></li>
+                    <li><a class="sidebar-link" data-target="notes"><span>📝</span> Notes Workspace</a></li>
+                    <li><a class="sidebar-link" data-target="expenseTracker"><span>💰</span> Expenses & Budget</a></li>
+                    <li><a class="sidebar-link" data-target="calendar"><span>📅</span> Calendar Events</a></li>
+                    <li><a class="sidebar-link" data-target="reminder"><span>🔔</span> Alarms & Reminders</a></li>
+                </ul>
+
+                <div class="sidebar-section-title">Utilities & Media</div>
+                <ul class="sidebar-menu-list">
+                    <li><a class="sidebar-link" data-target="pdfReader"><span>📄</span> Document Reader</a></li>
+                    <li><a class="sidebar-link" data-target="calculator"><span>➗</span> Advanced Calculator</a></li>
+                    <li><a class="sidebar-link" data-target="qrGenerator"><span>📱</span> QR & Barcodes</a></li>
+                    <li><a class="sidebar-link" data-target="camera"><span>📷</span> Camera Hub</a></li>
+                    <li><a class="sidebar-link" data-target="musicPlayer"><span>🎵</span> Media Player</a></li>
+                </ul>
+            </div>
+
+            <!-- Profile Info Footer -->
+            <div class="sidebar-footer">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop&crop=face" alt="User avatar" class="user-avatar" />
+                <div class="user-info">
+                    <div class="user-name">Terminal Commander</div>
+                    <div class="user-role">Lead Architect</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="main-viewport">
+            <!-- Topbar Row -->
+            <header class="top-nav">
+                <div class="topbar-left">
+                    <button id="sidebar-toggle" class="btn-sidebar-toggle" aria-label="Toggle Navigation menu">☰</button>
+                    <!-- Global Search Palette -->
+                    <div class="topbar-search">
+                        <span class="topbar-search-icon">🔍</span>
+                        <input id="global-search" type="text" class="topbar-search-input" placeholder="Search files, tasks, settings... (Ctrl+K)" />
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <!-- Accent Color customizer dots -->
+                    <div style="display: flex; gap: 8px; align-items: center; margin-right: 10px;" id="accent-selector">
+                        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Accent:</span>
+                        <span class="color-dot active" style="background: hsl(228, 85%, 60%);" data-hue="228"></span>
+                        <span class="color-dot" style="background: hsl(270, 80%, 65%);" data-hue="270"></span>
+                        <span class="color-dot" style="background: hsl(145, 80%, 40%);" data-hue="145"></span>
+                        <span class="color-dot" style="background: hsl(38, 95%, 50%);" data-hue="38"></span>
+                        <span class="color-dot" style="background: hsl(355, 85%, 55%);" data-hue="355"></span>
+                    </div>
+
+                    <!-- Theme toggle button -->
+                    <button id="theme-toggle" class="topbar-action-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">🌓</button>
+                    
+                    <!-- Notification Bell -->
+                    <button id="notification-btn" class="topbar-action-btn" title="Notifications" aria-label="View notifications">
+                        <span>🔔</span>
+                        <span class="badge-dot" id="unread-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Active viewport screens -->
+            <div id="sections-viewport" class="sections-viewport">
+                
+                <!-- DASHBOARD SECTION -->
+                <div id="dashboard" class="app-section active">
+                    <!-- Row 1: Welcome Banner & Clock Widget -->
+                    <div class="grid-12" style="margin-bottom: 1.5rem;">
+                        <div class="card-glass welcome-card" style="grid-column: span 8;">
+                            <div class="welcome-emoji">⚡</div>
+                            <h2 id="welcome-msg" style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;">Good Day, Commander</h2>
+                            <p style="color: var(--text-secondary); max-width: 80%;">Welcome back to your workspace. All local micro-services are active. Ask me anything to begin.</p>
+                        </div>
+                        <div class="card-glass" style="grid-column: span 4; display: flex; align-items: center; justify-content: center;">
+                            <div class="widget-clock">
+                                <div id="dash-clock" class="clock-number">00:00:00</div>
+                                <div id="dash-date" class="clock-date">📅 --, ---, ----</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: Prompt Bar and System metrics -->
+                    <div class="grid-12" style="margin-bottom: 1.5rem;">
+                        <div class="card-glass" style="grid-column: span 8;">
+                            <h3 style="font-size: 1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;">
+                                <span>💬</span> Quick Ask Assistant
+                            </h3>
+                            <div class="ai-prompt-bar">
+                                <input id="dash-ai-input" class="input-glass" placeholder="Ask details, create tables, write script drafts..." />
+                                <button id="dash-ai-btn" class="btn-primary">Ask</button>
+                            </div>
+                        </div>
+                        <div class="card-glass" style="grid-column: span 4;">
+                            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem;">System Health</h3>
+                            <div class="system-stats-grid">
+                                <div>
+                                    <div class="circle-chart">
+                                        <svg class="circle-chart-svg" width="90" height="90">
+                                            <circle class="circle-bg" cx="45" cy="45" r="40"></circle>
+                                            <circle id="battery-progress" class="circle-progress" cx="45" cy="45" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                        </svg>
+                                        <span id="battery-text" class="circle-chart-text">100%</span>
+                                    </div>
+                                    <div class="system-stat-label">Battery</div>
+                                </div>
+                                <div>
+                                    <div class="circle-chart">
+                                        <svg class="circle-chart-svg" width="90" height="90">
+                                            <circle class="circle-bg" cx="45" cy="45" r="40"></circle>
+                                            <circle id="network-progress" class="circle-progress success" cx="45" cy="45" r="40" stroke-dasharray="251.2" stroke-dashoffset="0"></circle>
+                                        </svg>
+                                        <span id="network-text" class="circle-chart-text">Online</span>
+                                    </div>
+                                    <div class="system-stat-label">Network</div>
+                                </div>
+                                <div>
+                                    <div class="circle-chart">
+                                        <svg class="circle-chart-svg" width="90" height="90">
+                                            <circle class="circle-bg" cx="45" cy="45" r="40"></circle>
+                                            <circle id="storage-progress" class="circle-progress warning" cx="45" cy="45" r="40" stroke-dasharray="251.2" stroke-dashoffset="30"></circle>
+                                        </svg>
+                                        <span id="storage-text" class="circle-chart-text">88%</span>
+                                    </div>
+                                    <div class="system-stat-label">Storage</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 3: Widgets Grid (Weather & To-dos & Sticky Note) -->
+                    <div class="grid-12" style="margin-bottom: 1.5rem;">
+                        <div class="card-glass" style="grid-column: span 4;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                                <h3 style="font-size: 1rem;">🌦️ Weather</h3>
+                                <span id="dash-weather-city" class="badge badge-primary">Dhaka, BD</span>
+                            </div>
+                            <div id="dash-weather-detail" style="text-align: center; padding: 0.5rem 0;">
+                                <div style="font-size: 2.25rem;">⛅</div>
+                                <div id="dash-weather-temp" style="font-size: 1.5rem; font-weight: 700; margin: 0.25rem 0;">31°C</div>
+                                <div id="dash-weather-desc" style="font-size: 0.85rem; color: var(--text-secondary);">Sunny Intervals</div>
+                            </div>
+                        </div>
+                        <div class="card-glass" style="grid-column: span 4;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                                <h3 style="font-size: 1rem;">📋 Quick Tasks</h3>
+                                <span id="dash-todo-badge" class="badge badge-warning">2 Pending</span>
+                            </div>
+                            <div id="dash-todo-items">
+                                <div class="widget-list-item">
+                                    <span class="widget-list-text">Design interactive dashboard</span>
+                                    <span class="badge badge-primary">Done</span>
+                                </div>
+                                <div class="widget-list-item">
+                                    <span class="widget-list-text">Setup Apps Script connections</span>
+                                    <span class="badge badge-warning">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-glass" style="grid-column: span 4;">
+                            <h3 style="font-size: 1rem; margin-bottom: 1rem;">📌 Sticky Note</h3>
+                            <textarea id="dash-sticky-note" class="input-glass" style="height: 70px; resize: none; font-size: 0.85rem; margin-bottom: 0.5rem;" placeholder="Save temporary thoughts/scratch logs..."></textarea>
+                            <button id="dash-save-note" class="btn-primary" style="padding: 0.35rem; font-size: 0.8rem; width: 100%;">Save to Notes Database</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 4: Shortcuts Modules Launchers -->
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin: 2rem 0 1rem 0;">Launch Assistant Modules</h3>
+                    <div class="launcher-grid">
+                        <div class="launcher-card" data-target="aiChat">
+                            <span class="launcher-icon">💬</span>
+                            <span class="launcher-title">AI Chat</span>
+                        </div>
+                        <div class="launcher-card" data-target="voiceRecognition">
+                            <span class="launcher-icon">🎤</span>
+                            <span class="launcher-title">Voice Control</span>
+                        </div>
+                        <div class="launcher-card" data-target="speechRecognition">
+                            <span class="launcher-icon">🔊</span>
+                            <span class="launcher-title">Dictation</span>
+                        </div>
+                        <div class="launcher-card" data-target="translator">
+                            <span class="launcher-icon">🌐</span>
+                            <span class="launcher-title">Translator</span>
+                        </div>
+                        <div class="launcher-card" data-target="ocr">
+                            <span class="launcher-icon">🔍</span>
+                            <span class="launcher-title">OCR Extractor</span>
+                        </div>
+                        <div class="launcher-card" data-target="faceDetection">
+                            <span class="launcher-icon">👤</span>
+                            <span class="launcher-title">Face Recog</span>
+                        </div>
+                        <div class="launcher-card" data-target="todoList">
+                            <span class="launcher-icon">✅</span>
+                            <span class="launcher-title">To-do List</span>
+                        </div>
+                        <div class="launcher-card" data-target="notes">
+                            <span class="launcher-icon">📝</span>
+                            <span class="launcher-title">Notes Workspace</span>
+                        </div>
+                        <div class="launcher-card" data-target="expenseTracker">
+                            <span class="launcher-icon">💰</span>
+                            <span class="launcher-title">Expenses</span>
+                        </div>
+                        <div class="launcher-card" data-target="calendar">
+                            <span class="launcher-icon">📅</span>
+                            <span class="launcher-title">Calendar</span>
+                        </div>
+                        <div class="launcher-card" data-target="reminder">
+                            <span class="launcher-icon">🔔</span>
+                            <span class="launcher-title">Reminders</span>
+                        </div>
+                        <div class="launcher-card" data-target="pdfReader">
+                            <span class="launcher-icon">📄</span>
+                            <span class="launcher-title">PDF Reader</span>
+                        </div>
+                        <div class="launcher-card" data-target="calculator">
+                            <span class="launcher-icon">➗</span>
+                            <span class="launcher-title">Calculator</span>
+                        </div>
+                        <div class="launcher-card" data-target="qrGenerator">
+                            <span class="launcher-icon">📱</span>
+                            <span class="launcher-title">QR/Barcodes</span>
+                        </div>
+                        <div class="launcher-card" data-target="camera">
+                            <span class="launcher-icon">📷</span>
+                            <span class="launcher-title">Camera Hub</span>
+                        </div>
+                        <div class="launcher-card" data-target="musicPlayer">
+                            <span class="launcher-icon">🎵</span>
+                            <span class="launcher-title">Media Player</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI CHAT VIEWPORT -->
+                <div id="aiChat" class="app-section">
+                    <div class="card-glass">
+                        <div class="module-header">
+                            <h2 class="module-title">💬 AI Chat Assistant</h2>
+                            <button class="btn-glass btn-back-dash">🏠 Home</button>
+                        </div>
+                        <div class="chat-container">
+                            <div id="chat-messages" class="chat-messages-modern"></div>
+                            <div class="ai-prompt-bar">
+                                <input id="chat-input" class="input-glass" placeholder="Ask AI Assistant anything..." />
+                                <button id="chat-send" class="btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- placeholders for other modular frameworks, hidden initially -->
+                <div id="voiceRecognition" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🎤 Voice Recognition</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body"><p>Voice recognition capabilities, speech parsing, and intent validation interface details.</p></div></div></div>
+                <div id="voiceResponse" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🗣️ Voice Responses</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Voice response logs view.</div></div></div>
+                <div id="speechRecognition" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🔊 Dictation Suite</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Speech text streams interface.</div></div></div>
+                <div id="speechSynthesis" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🔊 Speech Synthesis</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Synthesis testing workbench.</div></div></div>
+                <div id="typingAnimation" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">⚡ Typing Animation</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Status details for animated outputs.</div></div></div>
+                <div id="weather" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🌦️ Detailed Weather Forecast</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Weather parameters summary data.</div></div></div>
+                <div id="news" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📰 News Hub</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">News aggregate feeds.</div></div></div>
+                <div id="time" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">⏰ Time Zones</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Time tracking modules.</div></div></div>
+                <div id="calendar" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📅 Calendar Schedules</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Calendar agendas block.</div></div></div>
+                <div id="reminder" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🔔 Reminders</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Reminder schedule parameters.</div></div></div>
+                <div id="alarm" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">⏰ Systems Alarm</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Alarms control matrix.</div></div></div>
+                <div id="clock" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🕰️ Smart Clock</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Chronometer panel widget.</div></div></div>
+                <div id="stopwatch" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">⏱️ Stopwatch</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Stopwatch configuration display.</div></div></div>
+                <div id="timer" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">⏳ Countdown Timer</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Timers control dashboard.</div></div></div>
+                <div id="calculator" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">➗ Calculator</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Basic math calculator module workspace.</div></div></div>
+                <div id="scientificCalculator" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📐 Scientific Calculator</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Scientific formula parser workbench.</div></div></div>
+                <div id="unitConverter" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📊 Unit Converter Scale</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Unit mapping matrices tables.</div></div></div>
+                <div id="currencyConverter" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">💱 Live Currency Exchange</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Live currency market rates overview.</div></div></div>
+                <div id="qrGenerator" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📱 QR Code Generator</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">QR generation and scanning framework.</div></div></div>
+                <div id="barcodeGenerator" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🏷️ Barcode Suite</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Barcode matrix systems interface.</div></div></div>
+                <div id="googleSearch" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🔍 Google Engine Search</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Google query dispatcher.</div></div></div>
+                <div id="wikipediaSearch" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📖 Wikipedia Search</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Wiki dictionary lookup search elements.</div></div></div>
+                <div id="youtubeSearch" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📺 YouTube Search</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">YouTube API client.</div></div></div>
+                <div id="translator" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🌐 Multi-Language Translator</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Text translation pipeline systems.</div></div></div>
+                <div id="dictionary" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📖 Dictionary Reference</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Vocabulary lookup dictionary indices.</div></div></div>
+                <div id="ocr" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🔍 OCR Extractor</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Optical Character Recognition panel.</div></div></div>
+                <div id="pdfReader" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📄 PDF Reader Toolkit</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Interactive PDF document reader panel.</div></div></div>
+                <div id="imageGallery" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🖼️ Media Gallery</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Drive saved images collection.</div></div></div>
+                <div id="camera" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📷 Live Camera Preview</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">HTML5 Local Camera capture systems.</div></div></div>
+                <div id="screenshot" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📸 Screen Capture</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">System screenshot engine dashboard.</div></div></div>
+                <div id="faceDetection" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">👤 Face Biometrics Detection</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Biometric scanners tracking modules.</div></div></div>
+                <div id="faceRecognition" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🔑 Biometric Security Key</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Verification keys logs layout.</div></div></div>
+                <div id="musicPlayer" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🎵 Music Workstation</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Music playlists player parameters.</div></div></div>
+                <div id="videoPlayer" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🎥 Video Streaming</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Video format renderer panels.</div></div></div>
+                <div id="expenseTracker" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">💰 Expense Tracker Ledger</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Sheets linked financial registers database.</div></div></div>
+                <div id="todoList" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">✅ Advanced Tasks To-do</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Interactive Tasks List checklists workspace.</div></div></div>
+                <div id="notes" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📝 Notes Database</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Rich text logs & entries editor panels.</div></div></div>
+                <div id="chatBot" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🤖 Auto ChatBot Agent</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Automated customer dispatcher.</div></div></div>
+                <div id="languageLearning" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📚 Language Learning Drill</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Flashcard terms drill decks.</div></div></div>
+                <div id="healthTracker" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">❤️ Vital Health Metrics</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Calorie log lists dashboard.</div></div></div>
+                <div id="habitTracker" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">🎯 Habits Tracker</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Monthly streak indicators calendar grids.</div></div></div>
+                <div id="budgetPlanner" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📈 Budget Planning Scales</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Financial distributions forecast metrics.</div></div></div>
+                <div id="stockTracker" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📉 Stock Market Watchlist</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Asset trackers prices widgets.</div></div></div>
+                <div id="newsAggregator" class="app-section"><div class="card-glass"><div class="module-header"><h2 class="module-title">📰 News Publisher Feeds</h2><button class="btn-glass btn-back-dash">🏠 Home</button></div><div class="placeholder-body">Multi-source feeds dashboard.</div></div></div>
+            </div>
+            
+            <!-- System Status Footer -->
+            <footer class="app-footer" style="padding: 1rem; border-top: 1px solid var(--glass-border); font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); background: var(--glass-bg);">
+                <div>&copy; 2026 Alpha System Inc. All rights reserved.</div>
+                <div style="display: flex; gap: 1rem;">
+                    <span>Security: AES-256</span>
+                    <span>Database: Google Sheets (Active)</span>
+                    <span id="pwa-status">PWA: Ready Offline</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>
