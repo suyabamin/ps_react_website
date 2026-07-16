@@ -9,9 +9,13 @@ import App from './App.jsx'
 // Register service worker for offline/PWA support (reusing the original main.js logic)
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js").catch(err => {
-      console.error("Service worker registration failed:", err);
-    });
+    // Use import.meta.env.BASE_URL so the path is correct on
+    // both localhost ('/') and GitHub Pages ('/ps_react_website/')
+    navigator.serviceWorker
+      .register(import.meta.env.BASE_URL + "service-worker.js")
+      .catch(err => {
+        console.error("Service worker registration failed:", err);
+      });
   });
 }
 

@@ -1,20 +1,21 @@
-// Simple service worker for caching static assets and enabling offline support
-const CACHE_NAME = 'ps-website-cache-v1';
+// Service Worker for Personal AI Assistant PWA
+// Paths must match the GitHub Pages subpath: /ps_react_website/
+const CACHE_NAME = 'ps-website-cache-v2';
+const BASE = '/ps_react_website/';
+
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/css/base.css',
-  '/css/layout.css',
-  '/css/components.css',
-  '/css/theme.css',
-  // '/js/main.js' removed to prevent Vite parsing legacy module
-  // Add other module scripts as needed
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.json',
+  BASE + 'favicon.svg',
+  BASE + 'icons.svg',
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -27,12 +28,21 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only handle GET requests
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request);
+      return cached || fetch(event.request).catch(() => {
+        // Fallback to index.html for navigation requests (SPA support)
+        if (event.request.mode === 'navigate') {
+          return caches.match(BASE + 'index.html');
+        }
+      });
     })
   );
 });
