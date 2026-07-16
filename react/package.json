@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://suyabamin.github.io/ps_react_website",
+  "homepage": "https://suyab.dev",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

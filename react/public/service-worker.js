@@ -1,7 +1,7 @@
 // Service Worker for Personal AI Assistant PWA
 // Paths must match the GitHub Pages subpath: /ps_react_website/
-const CACHE_NAME = 'ps-website-cache-v2';
-const BASE = '/ps_react_website/';
+const CACHE_NAME = 'ps-website-cache-v3';
+const BASE = '/';
 
 const ASSETS_TO_CACHE = [
   BASE,
@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
       return cached || fetch(event.request).catch(() => {
         // Fallback to index.html for navigation requests (SPA support)
         if (event.request.mode === 'navigate') {
-          return caches.match(BASE + 'index.html');
+          return caches.match('/index.html');
         }
       });
     })
